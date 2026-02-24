@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PrepayLab · 提前还贷计算器</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">PrepayLab</p>
+          <h1>提前还贷/部分还款计算器</h1>
+          <p class="subtitle">
+            支持等额本息与等额本金，比较缩短期限与降低月供，输出节省利息与新的还款计划。
+          </p>
+        </div>
+        <div class="hero-card">
+          <p class="hero-title">计算建议</p>
+          <ul class="hero-list">
+            <li>先填写基础贷款信息与已还期数。</li>
+            <li>选择提前还款策略后再计算。</li>
+            <li>如需计划表，勾选“输出计划表”。</li>
+          </ul>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="card">
+          <h2>输入参数</h2>
+          <form id="calc-form" class="form">
+            <fieldset>
+              <legend>基础贷款信息</legend>
+              <label>
+                贷款总额（元）
+                <input name="principal" type="number" step="0.01" value="1000000" required />
+              </label>
+              <label>
+                年利率（%）
+                <input name="annual_rate" type="text" value="3.95" required />
+              </label>
+              <label>
+                总期数（月）
+                <input name="term_months" type="number" step="1" value="360" required />
+              </label>
+              <label>
+                还款方式
+                <select name="repayment_type">
+                  <option value="EPI" selected>等额本息</option>
+                  <option value="EP">等额本金</option>
+                </select>
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>已还情况</legend>
+              <label>
+                已还期数
+                <input name="paid_months" type="number" step="1" value="24" required />
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>提前还款信息</legend>
+              <label>
+                提前还款类型
+                <select name="prepay_type">
+                  <option value="partial" selected>部分提前还款</option>
+                  <option value="full">提前结清</option>
+                </select>
+              </label>
+              <label>
+                提前还款金额（元）
+                <input name="prepay_amount" type="number" step="0.01" value="200000" />
+              </label>
+              <label>
+                提前还款策略
+                <select name="strategy">
+                  <option value="reduce_term" selected>缩短期限（月供不变）</option>
+                  <option value="reduce_payment">降低月供（期限不变）</option>
+                </select>
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>费用与限制（可选）</legend>
+              <label>
+                违约金比例（%）
+                <input name="penalty_rate" type="number" step="0.01" value="1" />
+              </label>
+              <label>
+                固定违约金（元）
+                <input name="penalty_fixed" type="number" step="0.01" value="0" />
+              </label>
+              <label>
+                免违约金窗口（月）
+                <input name="penalty_free_months" type="number" step="1" value="12" />
+              </label>
+              <label>
+                最低提前还金额（元）
+                <input name="min_prepay_amount" type="number" step="0.01" placeholder="可选" />
+              </label>
+            </fieldset>
+
+            <div class="form-actions">
+              <label class="checkbox">
+                <input name="include_schedule" type="checkbox" />
+                输出计划表
+              </label>
+              <button type="submit" class="btn primary">开始计算</button>
+              <button type="reset" class="btn ghost">重置</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card" id="result-card">
+          <h2>计算结果</h2>
+          <div id="error" class="error" hidden></div>
+          <div id="warnings" class="warnings" hidden></div>
+
+          <div class="summary" id="summary"></div>
+
+          <div class="schedule" id="schedule" hidden>
+            <h3>新的还款计划表</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>期数</th>
+                    <th>当期还款</th>
+                    <th>本金</th>
+                    <th>利息</th>
+                    <th>剩余本金</th>
+                  </tr>
+                </thead>
+                <tbody id="schedule-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>免责声明：本工具按“按月计息、按期还款”简化估算，结果仅供参考。</p>
+      </footer>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

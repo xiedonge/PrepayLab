@@ -3,16 +3,26 @@
 
 备注：已按请求添加说明。
 
-## 快速开始
+## 网站版使用
+
+直接打开 `index.html` 即可使用，或在本目录启动静态服务：
 
 ```bash
-python -m prepaylab.cli --input examples/sample_input.json --pretty
+python3 -m http.server 8000
+```
+
+然后访问 `http://localhost:8000`。
+
+## 命令行使用（可选）
+
+```bash
+python3 -m prepaylab.cli --input examples/sample_input.json --pretty
 ```
 
 如需输出新的还款计划表：
 
 ```bash
-python -m prepaylab.cli --input examples/sample_input.json --pretty --schedule
+python3 -m prepaylab.cli --input examples/sample_input.json --pretty --schedule
 ```
 
 ## 输入说明（JSON）
